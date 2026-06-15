@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TeamPilot SaaS Prototype</title>
+    <title>团队领航软件服务原型图</title>
     <style>
       :root {
         --bg: #f6f7f9;
@@ -38,6 +38,10 @@
       a {
         color: inherit;
         text-decoration: none;
+      }
+
+      html {
+        scroll-behavior: smooth;
       }
 
       .page {
@@ -78,6 +82,12 @@
         padding: 8px 12px;
         color: var(--muted);
         font-size: 14px;
+      }
+
+      .toc a.active {
+        border-color: var(--brand);
+        color: var(--brand);
+        font-weight: 800;
       }
 
       .section {
@@ -230,6 +240,8 @@
         color: var(--text);
         font-size: 14px;
         font-weight: 700;
+        cursor: pointer;
+        user-select: none;
       }
 
       .btn.primary {
@@ -275,6 +287,7 @@
         padding: 9px 10px;
         color: #cbd5e1;
         font-size: 14px;
+        cursor: pointer;
       }
 
       .nav-item.active {
@@ -393,6 +406,16 @@
         border: 1px solid var(--line);
         border-radius: 6px;
         padding: 10px;
+      }
+
+      .list-row.clickable {
+        cursor: pointer;
+      }
+
+      .list-row.clickable:hover,
+      .conversation-item:hover,
+      .task-card:hover {
+        border-color: var(--brand);
       }
 
       .row-main {
@@ -546,6 +569,7 @@
         padding: 10px;
         color: var(--muted);
         font-size: 13px;
+        cursor: pointer;
       }
 
       .conversation-item.active {
@@ -599,6 +623,63 @@
         gap: 10px;
         border-top: 1px solid var(--line);
         padding: 12px;
+      }
+
+      .toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 20;
+        max-width: 320px;
+        border: 1px solid var(--line-strong);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: var(--shadow);
+        padding: 12px 14px;
+        color: var(--text);
+        font-size: 14px;
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        transition:
+          opacity 0.18s ease,
+          transform 0.18s ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        display: grid;
+        place-items: center;
+        background: rgba(17, 24, 39, 0.28);
+        padding: 18px;
+      }
+
+      .modal-backdrop.hidden {
+        display: none;
+      }
+
+      .modal {
+        width: min(100%, 420px);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .modal h3 {
+        margin: 0 0 8px;
+      }
+
+      .modal p {
+        margin: 0 0 16px;
+        color: var(--muted);
       }
 
       .danger-zone {
@@ -657,9 +738,9 @@
   <body>
     <main class="page">
       <header class="hero">
-        <h1>TeamPilot SaaS 低保真原型图</h1>
+        <h1>团队领航软件服务低保真原型图</h1>
         <p>
-          基于 docs/PROTOTYPE_SPEC.md 生成，用于指导后续手写 Next.js 页面。
+          基于原型说明文档生成，用于指导后续手写前端页面。
           这份原型强调结构、信息层级、状态和交互入口，不追求最终视觉风格。
         </p>
       </header>
@@ -670,7 +751,7 @@
         <a href="#org">组织</a>
         <a href="#knowledge">知识库</a>
         <a href="#tasks">任务</a>
-        <a href="#ai">AI 助手</a>
+        <a href="#ai">智能助手</a>
         <a href="#admin">成员设置审计</a>
       </nav>
 
@@ -683,23 +764,23 @@
           <article class="screen small">
             <div class="screen-head">
               <div class="screen-name">登录页</div>
-              <div class="screen-note">/login</div>
+              <div class="screen-note">登录页</div>
             </div>
             <div class="auth-canvas">
               <div class="auth-box">
-                <div class="brand">TeamPilot</div>
+                <div class="brand">团队领航</div>
                 <h3>登录到你的工作台</h3>
                 <div class="field">
                   <span class="label">邮箱</span>
-                  <div class="input">name@example.com</div>
+                  <div class="input">邮箱示例</div>
                 </div>
                 <div class="field">
                   <span class="label">密码</span>
                   <div class="input">••••••••</div>
                 </div>
                 <div class="error">账号或密码错误，请检查后重试。</div>
-                <div class="btn primary" style="width: 100%">登录</div>
-                <div class="auth-link">还没有账号？创建你的团队工作台</div>
+                <div class="btn primary" data-jump="dashboard" data-toast="登录成功，已进入仪表盘。" style="width: 100%">登录</div>
+                <div class="auth-link btn" data-jump="auth" data-toast="已切换到注册表单。">还没有账号？创建你的团队工作台</div>
               </div>
             </div>
           </article>
@@ -707,19 +788,19 @@
           <article class="screen small">
             <div class="screen-head">
               <div class="screen-name">注册页</div>
-              <div class="screen-note">/register</div>
+              <div class="screen-note">注册页</div>
             </div>
             <div class="auth-canvas">
               <div class="auth-box">
-                <div class="brand">TeamPilot</div>
+                <div class="brand">团队领航</div>
                 <h3>创建你的团队工作台</h3>
                 <div class="field">
                   <span class="label">用户名</span>
-                  <div class="input">Wangyalong</div>
+                  <div class="input">王亚龙</div>
                 </div>
                 <div class="field">
                   <span class="label">邮箱</span>
-                  <div class="input">name@example.com</div>
+                  <div class="input">邮箱示例</div>
                 </div>
                 <div class="field">
                   <span class="label">密码</span>
@@ -729,8 +810,8 @@
                   <span class="label">确认密码</span>
                   <div class="input">••••••••</div>
                 </div>
-                <div class="btn primary" style="width: 100%">注册并创建默认组织</div>
-                <div class="auth-link">已有账号？返回登录</div>
+                <div class="btn primary" data-jump="dashboard" data-toast="注册成功，默认组织已创建。" style="width: 100%">注册并创建默认组织</div>
+                <div class="auth-link btn" data-jump="auth" data-toast="已切换到登录表单。">已有账号？返回登录</div>
               </div>
             </div>
           </article>
@@ -744,35 +825,35 @@
         </div>
         <article class="screen">
           <div class="screen-head">
-            <div class="screen-name">Dashboard</div>
-            <div class="screen-note">/dashboard</div>
+            <div class="screen-name">仪表盘</div>
+            <div class="screen-note">仪表盘页面</div>
           </div>
           <div class="app-frame">
             <aside class="sidebar">
-              <div class="sidebar-brand">TeamPilot</div>
-              <a class="nav-item active">Dashboard</a>
-              <a class="nav-item">Knowledge</a>
-              <a class="nav-item">Tasks</a>
-              <a class="nav-item">AI Assistant</a>
-              <a class="nav-item">Members</a>
-              <a class="nav-item">Settings</a>
-              <a class="nav-item">Audit Logs</a>
+              <div class="sidebar-brand">团队领航</div>
+              <a class="nav-item active" data-jump="dashboard">仪表盘</a>
+              <a class="nav-item" data-jump="knowledge">知识库</a>
+              <a class="nav-item" data-jump="tasks">任务</a>
+              <a class="nav-item" data-jump="ai">智能助手</a>
+              <a class="nav-item" data-jump="admin">成员</a>
+              <a class="nav-item" data-jump="admin">设置</a>
+              <a class="nav-item" data-jump="admin">审计日志</a>
             </aside>
             <div class="main">
               <div class="topbar">
-                <span class="org-pill">当前组织：Acme Studio</span>
+                <span class="org-pill">当前组织：<span data-org-label>青蓝工作室</span></span>
                 <div class="button-row">
-                  <span class="org-pill">Wangyalong</span>
-                  <span class="btn">退出</span>
+                  <span class="org-pill">王亚龙</span>
+                  <span class="btn" data-jump="auth" data-toast="已退出登录，返回登录注册区域。">退出</span>
                 </div>
               </div>
               <div class="content">
                 <div class="page-title">
                   <div>
                     <h3>欢迎回来</h3>
-                    <p>查看当前组织的知识、任务和 AI 会话概览。</p>
+                    <p>查看当前组织的知识、任务和智能会话概览。</p>
                   </div>
-                  <span class="btn primary">新建任务</span>
+                  <span class="btn primary" data-jump="tasks" data-toast="已跳转到任务区域，可从这里新建任务。">新建任务</span>
                 </div>
                 <div class="cards">
                   <div class="card">
@@ -788,7 +869,7 @@
                     <div class="metric-value">5</div>
                   </div>
                   <div class="card">
-                    <div class="metric">AI 会话</div>
+                    <div class="metric">智能会话</div>
                     <div class="metric-value">13</div>
                   </div>
                 </div>
@@ -799,32 +880,32 @@
                       <div class="list-row">
                         <div class="row-main">
                           <div class="row-title">完成登录接口联调</div>
-                          <div class="row-sub">负责人：Wangyalong · 今天</div>
+                          <div class="row-sub">负责人：王亚龙 · 今天</div>
                         </div>
-                        <span class="status warn">In Progress</span>
+                        <span class="status warn">进行中</span>
                       </div>
-                      <div class="list-row">
+                      <div class="list-row clickable" data-jump="tasks" data-toast="已跳转到任务列表。">
                         <div class="row-main">
-                          <div class="row-title">整理 Prisma schema 草稿</div>
-                          <div class="row-sub">负责人：You · 明天</div>
+                          <div class="row-title">整理数据库模型草稿</div>
+                          <div class="row-sub">负责人：我 · 明天</div>
                         </div>
-                        <span class="status">Todo</span>
+                        <span class="status">待办</span>
                       </div>
                     </div>
                   </div>
                   <div class="panel">
-                    <div class="panel-head">最近知识 <span class="screen-note">新建知识</span></div>
+                    <div class="panel-head">最近知识 <span class="screen-note btn" data-jump="knowledge" data-toast="已跳转到知识库。">新建知识</span></div>
                     <div class="panel-body list">
                       <div class="list-row">
                         <div class="row-main">
-                          <div class="row-title">SaaS 多租户数据隔离笔记</div>
-                          <div class="row-sub">更新于 10 分钟前 · Owner</div>
+                          <div class="row-title">软件服务多租户数据隔离笔记</div>
+                          <div class="row-sub">更新于 10 分钟前 · 所有者</div>
                         </div>
                       </div>
                       <div class="list-row">
                         <div class="row-main">
-                          <div class="row-title">JWT 登录流程图</div>
-                          <div class="row-sub">更新于 昨天 · Admin</div>
+                          <div class="row-title">登录凭证流程图</div>
+                          <div class="row-sub">更新于 昨天 · 管理员</div>
                         </div>
                       </div>
                     </div>
@@ -843,37 +924,37 @@
         </div>
         <article class="screen small">
           <div class="screen-head">
-            <div class="screen-name">Organization Switcher</div>
-            <div class="screen-note">全局 topbar 弹层或独立页面</div>
+            <div class="screen-name">组织切换器</div>
+            <div class="screen-note">全局顶部栏弹层或独立页面</div>
           </div>
           <div class="content">
             <div class="page-title">
               <div>
                 <h3>选择组织</h3>
-                <p>切换后知识库、任务、成员和 AI 会话都会刷新为当前组织数据。</p>
+                <p>切换后知识库、任务、成员和智能会话都会刷新为当前组织数据。</p>
               </div>
-              <span class="btn primary">创建新组织</span>
+              <span class="btn primary" data-toast="已打开创建组织弹窗。">创建新组织</span>
             </div>
             <div class="panel">
               <div class="panel-body list">
                 <div class="list-row">
                   <div class="row-main">
-                    <div class="row-title">Acme Studio</div>
-                    <div class="row-sub">当前组织 · Owner · 5 名成员</div>
+                    <div class="row-title">青蓝工作室</div>
+                    <div class="row-sub">当前组织 · 所有者 · 5 名成员</div>
                   </div>
-                  <span class="status">Active</span>
+                  <span class="status">当前</span>
                 </div>
-                <div class="list-row">
+                <div class="list-row clickable" data-org-switch="学习小组">
                   <div class="row-main">
-                    <div class="row-title">Learning Lab</div>
-                    <div class="row-sub">Member · 2 名成员</div>
+                    <div class="row-title">学习小组</div>
+                    <div class="row-sub">成员 · 2 名成员</div>
                   </div>
                   <span class="btn">切换</span>
                 </div>
-                <div class="list-row">
+                <div class="list-row clickable" data-org-switch="副业项目">
                   <div class="row-main">
-                    <div class="row-title">Side Project</div>
-                    <div class="row-sub">Admin · 3 名成员</div>
+                    <div class="row-title">副业项目</div>
+                    <div class="row-sub">管理员 · 3 名成员</div>
                   </div>
                   <span class="btn">切换</span>
                 </div>
@@ -892,46 +973,46 @@
           <article class="screen">
             <div class="screen-head">
               <div class="screen-name">知识库列表页</div>
-              <div class="screen-note">/knowledge</div>
+              <div class="screen-note">知识库页面</div>
             </div>
             <div class="app-frame">
               <aside class="sidebar">
-                <div class="sidebar-brand">TeamPilot</div>
-                <a class="nav-item">Dashboard</a>
-                <a class="nav-item active">Knowledge</a>
-                <a class="nav-item">Tasks</a>
-                <a class="nav-item">AI Assistant</a>
+                <div class="sidebar-brand">团队领航</div>
+                <a class="nav-item" data-jump="dashboard">仪表盘</a>
+                <a class="nav-item active" data-jump="knowledge">知识库</a>
+                <a class="nav-item" data-jump="tasks">任务</a>
+                <a class="nav-item" data-jump="ai">智能助手</a>
               </aside>
               <div class="main">
-                <div class="topbar"><span class="org-pill">Acme Studio</span><span class="btn">退出</span></div>
+                <div class="topbar"><span class="org-pill" data-org-label>青蓝工作室</span><span class="btn" data-jump="auth" data-toast="已退出登录，返回登录注册区域。">退出</span></div>
                 <div class="content">
                   <div class="page-title">
                     <div>
                       <h3>知识库</h3>
                       <p>管理当前组织的团队资料和项目笔记。</p>
                     </div>
-                    <span class="btn primary">新建知识</span>
+                    <span class="btn primary" data-toast="已打开新建知识表单。">新建知识</span>
                   </div>
                   <div class="toolbar">
                     <div class="input">搜索标题或内容</div>
                     <div class="select">标签：全部</div>
                     <div class="select">排序：最近更新</div>
-                    <div class="btn">搜索</div>
+                    <div class="btn" data-toast="已应用知识库搜索条件。">搜索</div>
                   </div>
                   <div class="list">
-                    <div class="list-row">
+                    <div class="list-row clickable" data-toast="已打开知识条目详情。">
                       <div class="row-main">
-                        <div class="row-title">SaaS 多租户数据隔离笔记</div>
-                        <div class="row-sub">按 organizationId 过滤所有业务表，避免跨组织读写。</div>
-                        <div class="tag-row"><span class="tag">SaaS</span><span class="tag">Database</span></div>
+                        <div class="row-title">软件服务多租户数据隔离笔记</div>
+                        <div class="row-sub">按组织编号过滤所有业务表，避免跨组织读写。</div>
+                        <div class="tag-row"><span class="tag">软件服务</span><span class="tag">数据库</span></div>
                       </div>
                       <span class="screen-note">10 分钟前</span>
                     </div>
-                    <div class="list-row">
+                    <div class="list-row clickable" data-toast="已打开知识条目详情。">
                       <div class="row-main">
-                        <div class="row-title">Redis 队列设计</div>
-                        <div class="row-sub">AI 任务先写入数据库，再交给 BullMQ 异步处理。</div>
-                        <div class="tag-row"><span class="tag">Redis</span><span class="tag">AI</span></div>
+                        <div class="row-title">缓存队列设计</div>
+                        <div class="row-sub">智能任务先写入数据库，再交给后台队列异步处理。</div>
+                        <div class="tag-row"><span class="tag">缓存</span><span class="tag">智能助手</span></div>
                       </div>
                       <span class="screen-note">昨天</span>
                     </div>
@@ -945,37 +1026,37 @@
           <article class="screen">
             <div class="screen-head">
               <div class="screen-name">知识条目详情页</div>
-              <div class="screen-note">/knowledge/:id</div>
+              <div class="screen-note">知识详情页面</div>
             </div>
             <div class="content">
               <div class="page-title">
                 <div>
-                  <h3>SaaS 多租户数据隔离笔记</h3>
-                  <p>创建人：Wangyalong · 最后更新：10 分钟前</p>
+                  <h3>软件服务多租户数据隔离笔记</h3>
+                  <p>创建人：王亚龙 · 最后更新：10 分钟前</p>
                 </div>
                 <div class="button-row">
-                  <span class="btn">编辑</span>
-                  <span class="btn danger">删除</span>
+                  <span class="btn" data-toast="已进入知识编辑状态。">编辑</span>
+                  <span class="btn danger" data-confirm="确认删除这条知识吗？删除后将返回知识库列表。">删除</span>
                 </div>
               </div>
               <div class="detail-layout">
                 <article class="article">
                   <h4>核心原则</h4>
                   <p>
-                    所有业务数据都需要绑定 organizationId。查询列表、详情、更新和删除时，
-                    后端都必须根据当前用户的 membership 校验组织访问权限。
+                    所有业务数据都需要绑定组织编号。查询列表、详情、更新和删除时，
+                    后端都必须根据当前用户的成员关系校验组织访问权限。
                   </p>
                   <p>
                     前端切换组织后，应刷新当前页面数据；后端不能信任前端传入的角色信息。
                   </p>
-                  <div class="tag-row"><span class="tag">SaaS</span><span class="tag">Security</span></div>
+                  <div class="tag-row"><span class="tag">软件服务</span><span class="tag">安全</span></div>
                 </article>
                 <aside class="panel">
                   <div class="panel-head">元信息</div>
                   <div class="panel-body list">
-                    <div class="row-sub">所属组织：Acme Studio</div>
-                    <div class="row-sub">创建人：Wangyalong</div>
-                    <div class="row-sub">最后更新人：Admin</div>
+                    <div class="row-sub">所属组织：青蓝工作室</div>
+                    <div class="row-sub">创建人：王亚龙</div>
+                    <div class="row-sub">最后更新人：管理员</div>
                     <div class="row-sub">状态：可编辑</div>
                   </div>
                 </aside>
@@ -994,7 +1075,7 @@
           <article class="screen">
             <div class="screen-head">
               <div class="screen-name">任务列表页</div>
-              <div class="screen-note">/tasks</div>
+              <div class="screen-note">任务页面</div>
             </div>
             <div class="content">
               <div class="page-title">
@@ -1002,38 +1083,38 @@
                   <h3>任务</h3>
                   <p>跟踪当前组织的待办、进行中和已完成工作。</p>
                 </div>
-                <span class="btn primary">新建任务</span>
+                <span class="btn primary" data-toast="已打开新建任务表单。">新建任务</span>
               </div>
               <div class="toolbar">
                 <div class="select">状态：全部</div>
                 <div class="select">负责人：全部</div>
                 <div class="select">优先级：全部</div>
-                <div class="btn">筛选</div>
+                <div class="btn" data-toast="已应用任务筛选条件。">筛选</div>
               </div>
               <div class="kanban">
                 <div class="kanban-col">
-                  <div class="kanban-title">Todo</div>
-                  <div class="task-card">
-                    <strong>设计 User schema</strong>
-                    <span class="row-sub">负责人：You · High · 明天</span>
+                  <div class="kanban-title">待办</div>
+                  <div class="task-card" data-toast="已打开任务详情。">
+                    <strong>设计用户数据模型</strong>
+                    <span class="row-sub">负责人：我 · 高 · 明天</span>
                   </div>
-                  <div class="task-card">
-                    <strong>补充 .env.example</strong>
-                    <span class="row-sub">负责人：Admin · Medium</span>
+                  <div class="task-card" data-toast="已打开任务详情。">
+                    <strong>补充环境变量示例</strong>
+                    <span class="row-sub">负责人：管理员 · 中</span>
                   </div>
                 </div>
                 <div class="kanban-col">
-                  <div class="kanban-title">In Progress</div>
-                  <div class="task-card">
+                  <div class="kanban-title">进行中</div>
+                  <div class="task-card" data-toast="已打开任务详情。">
                     <strong>完成登录接口联调</strong>
-                    <span class="row-sub">负责人：Wangyalong · High</span>
+                    <span class="row-sub">负责人：王亚龙 · 高</span>
                   </div>
                 </div>
                 <div class="kanban-col">
-                  <div class="kanban-title">Done</div>
-                  <div class="task-card">
+                  <div class="kanban-title">已完成</div>
+                  <div class="task-card" data-toast="已打开任务详情。">
                     <strong>编写产品需求文档</strong>
-                    <span class="row-sub">负责人：You · Low</span>
+                    <span class="row-sub">负责人：我 · 低</span>
                   </div>
                 </div>
               </div>
@@ -1043,15 +1124,15 @@
           <article class="screen">
             <div class="screen-head">
               <div class="screen-name">任务详情页</div>
-              <div class="screen-note">/tasks/:id</div>
+              <div class="screen-note">任务详情页面</div>
             </div>
             <div class="content">
               <div class="page-title">
                 <div>
                   <h3>完成登录接口联调</h3>
-                  <p>创建人：Wangyalong · 更新时间：今天 14:20</p>
+                  <p>创建人：王亚龙 · 更新时间：今天 14:20</p>
                 </div>
-                <span class="btn primary">保存修改</span>
+                <span class="btn primary" data-toast="任务修改已保存。">保存修改</span>
               </div>
               <div class="detail-layout">
                 <div>
@@ -1061,21 +1142,21 @@
                   </div>
                   <div class="field">
                     <span class="label">任务描述</span>
-                    <div class="textarea">联调注册、登录、当前用户接口，并确认 token 存储和路由保护流程。</div>
+                    <div class="textarea">联调注册、登录、当前用户接口，并确认登录凭证存储和路由保护流程。</div>
                   </div>
                 </div>
                 <aside>
                   <div class="field">
                     <span class="label">状态</span>
-                    <div class="select">In Progress</div>
+                    <div class="select">进行中</div>
                   </div>
                   <div class="field">
                     <span class="label">优先级</span>
-                    <div class="select">High</div>
+                    <div class="select">高</div>
                   </div>
                   <div class="field">
                     <span class="label">负责人</span>
-                    <div class="select">Wangyalong</div>
+                    <div class="select">王亚龙</div>
                   </div>
                   <div class="field">
                     <span class="label">截止时间</span>
@@ -1090,21 +1171,21 @@
 
       <section id="ai" class="section">
         <div class="section-title">
-          <h2>AI 助手</h2>
+          <h2>智能助手</h2>
           <span>会话列表、消息流、异步任务状态</span>
         </div>
         <article class="screen">
           <div class="screen-head">
-            <div class="screen-name">AI Assistant</div>
-            <div class="screen-note">/assistant</div>
+            <div class="screen-name">智能助手</div>
+            <div class="screen-note">智能助手页面</div>
           </div>
           <div class="content">
             <div class="page-title">
               <div>
-                <h3>AI 助手</h3>
-                <p>先使用 mock AI 回复，后续接入 OpenAI API 或其他模型服务。</p>
+                <h3>智能助手</h3>
+                <p>先使用模拟回复，后续接入真实模型服务。</p>
               </div>
-              <span class="btn primary">新建会话</span>
+              <span class="btn primary" data-new-conversation>新建会话</span>
             </div>
             <div class="chat-layout">
               <aside class="conversation-list">
@@ -1113,7 +1194,7 @@
                   <div class="row-sub">刚刚更新</div>
                 </div>
                 <div class="conversation-item">
-                  <strong>Redis 队列怎么用？</strong>
+                  <strong>缓存队列怎么用？</strong>
                   <div class="row-sub">昨天</div>
                 </div>
                 <div class="conversation-item">
@@ -1124,20 +1205,20 @@
               <div class="chat-panel">
                 <div class="chat-head">如何设计多租户？</div>
                 <div class="messages">
-                  <div class="message user">这个 SaaS 项目里 organizationId 应该怎么用？</div>
+                  <div class="message user">这个软件服务项目里组织编号应该怎么用？</div>
                   <div class="message ai">
-                    建议所有业务表都保存 organizationId，并在后端从当前用户 membership
-                    校验权限。不要只依赖前端传入的组织 ID。
+                    建议所有业务表都保存组织编号，并在后端从当前用户成员关系
+                    校验权限。不要只依赖前端传入的组织编号。
                   </div>
-                  <div class="message user">那任务队列里的 AI 回复也需要组织隔离吗？</div>
-                  <div class="message ai">处理中... BullMQ job 已创建，状态为 processing。</div>
+                  <div class="message user">那任务队列里的智能回复也需要组织隔离吗？</div>
+                  <div class="message ai">处理中... 后台任务已创建，状态为处理中。</div>
                   <div class="message ai" style="border-color:#f0b8ad;color:var(--danger)">
                     失败状态示例：模型服务暂时不可用。重试
                   </div>
                 </div>
                 <div class="composer">
-                  <div class="input">输入问题，回车或点击发送</div>
-                  <span class="btn primary">发送</span>
+                  <div class="input" data-chat-input>输入问题，回车或点击发送</div>
+                  <span class="btn primary" data-send-message>发送</span>
                 </div>
               </div>
             </div>
@@ -1154,24 +1235,24 @@
           <article class="screen small">
             <div class="screen-head">
               <div class="screen-name">成员管理页</div>
-              <div class="screen-note">/members</div>
+              <div class="screen-note">成员页面</div>
             </div>
             <div class="content">
               <div class="page-title">
                 <div>
                   <h3>成员</h3>
-                  <p>Owner 和 Admin 可以邀请成员。</p>
+                  <p>所有者和管理员可以邀请成员。</p>
                 </div>
-                <span class="btn primary">邀请成员</span>
+                <span class="btn primary" data-toast="已打开邀请成员弹窗。">邀请成员</span>
               </div>
               <table class="table">
                 <thead>
                   <tr><th>用户</th><th>角色</th><th>加入时间</th><th>操作</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Wangyalong</td><td>Owner</td><td>Jun 15</td><td>-</td></tr>
-                  <tr><td>Admin User</td><td>Admin</td><td>Jun 16</td><td>改角色</td></tr>
-                  <tr><td>Member User</td><td>Member</td><td>Jun 17</td><td>移除</td></tr>
+                  <tr><td>王亚龙</td><td>所有者</td><td>六月十五日</td><td>-</td></tr>
+                  <tr><td>管理员用户</td><td>管理员</td><td>六月十六日</td><td><span class="btn" data-toast="已打开修改角色弹窗。">改角色</span></td></tr>
+                  <tr><td>成员用户</td><td>成员</td><td>六月十七日</td><td><span class="btn danger" data-confirm="确认移除该成员吗？">移除</span></td></tr>
                 </tbody>
               </table>
             </div>
@@ -1180,29 +1261,29 @@
           <article class="screen small">
             <div class="screen-head">
               <div class="screen-name">组织设置页</div>
-              <div class="screen-note">/settings</div>
+              <div class="screen-note">设置页面</div>
             </div>
             <div class="content">
               <div class="page-title">
                 <div>
                   <h3>组织设置</h3>
-                  <p>Owner 可以修改组织资料。</p>
+                  <p>所有者可以修改组织资料。</p>
                 </div>
               </div>
               <div class="field">
                 <span class="label">组织名称</span>
-                <div class="input">Acme Studio</div>
+                <div class="input">青蓝工作室</div>
               </div>
               <div class="field">
-                <span class="label">组织 slug</span>
-                <div class="input">acme-studio</div>
+                <span class="label">组织短链接</span>
+                <div class="input">青蓝</div>
               </div>
-              <div class="btn primary">保存</div>
+              <div class="btn primary" data-toast="组织设置已保存。">保存</div>
               <div style="height: 18px"></div>
               <div class="danger-zone">
                 <strong>危险区域</strong>
-                <p class="row-sub">删除组织需要二次确认，且只有 Owner 可操作。</p>
-                <span class="btn danger">删除组织</span>
+                <p class="row-sub">删除组织需要二次确认，且只有所有者可操作。</p>
+                <span class="btn danger" data-confirm="确认删除当前组织吗？这是危险操作。">删除组织</span>
               </div>
             </div>
           </article>
@@ -1210,7 +1291,7 @@
           <article class="screen small">
             <div class="screen-head">
               <div class="screen-name">审计日志页</div>
-              <div class="screen-note">/audit-logs</div>
+              <div class="screen-note">审计日志页面</div>
             </div>
             <div class="content">
               <div class="page-title">
@@ -1229,16 +1310,115 @@
                   <tr><th>时间</th><th>操作人</th><th>动作</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>14:20</td><td>Wangyalong</td><td>更新任务状态</td></tr>
-                  <tr><td>13:10</td><td>Admin</td><td>修改成员角色</td></tr>
-                  <tr><td>昨天</td><td>Wangyalong</td><td>删除知识条目</td></tr>
+                  <tr><td>十四点二十</td><td>王亚龙</td><td>更新任务状态</td></tr>
+                  <tr><td>十三点十分</td><td>管理员</td><td>修改成员角色</td></tr>
+                  <tr><td>昨天</td><td>王亚龙</td><td>删除知识条目</td></tr>
                 </tbody>
               </table>
             </div>
           </article>
         </div>
       </section>
+      <div class="toast" role="status" aria-live="polite"></div>
+      <div class="modal-backdrop hidden" data-modal>
+        <div class="modal">
+          <h3>操作确认</h3>
+          <p data-modal-message>确认执行该操作吗？</p>
+          <div class="button-row">
+            <span class="btn danger" data-confirm-ok>确认</span>
+            <span class="btn" data-confirm-cancel>取消</span>
+          </div>
+        </div>
+      </div>
     </main>
+    <script>
+      const toast = document.querySelector(".toast");
+      const modal = document.querySelector("[data-modal]");
+      const modalMessage = document.querySelector("[data-modal-message]");
+      const confirmOk = document.querySelector("[data-confirm-ok]");
+      const confirmCancel = document.querySelector("[data-confirm-cancel]");
+      let toastTimer;
+      let pendingConfirm = "";
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+      }
+
+      function jumpTo(id) {
+        const target = document.getElementById(id);
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.querySelectorAll(".toc a").forEach((item) => {
+          item.classList.toggle("active", item.getAttribute("href") === `#${id}`);
+        });
+      }
+
+      document.querySelectorAll("[data-jump]").forEach((item) => {
+        item.addEventListener("click", () => {
+          jumpTo(item.dataset.jump);
+          if (item.dataset.toast) showToast(item.dataset.toast);
+        });
+      });
+
+      document.querySelectorAll("[data-toast]").forEach((item) => {
+        item.addEventListener("click", () => showToast(item.dataset.toast));
+      });
+
+      document.querySelectorAll("[data-org-switch]").forEach((item) => {
+        item.addEventListener("click", () => {
+          const orgName = item.dataset.orgSwitch;
+          document.querySelectorAll("[data-org-label]").forEach((label) => {
+            label.textContent = orgName;
+          });
+          showToast(`已切换到组织：${orgName}`);
+          jumpTo("dashboard");
+        });
+      });
+
+      document.querySelector("[data-new-conversation]").addEventListener("click", () => {
+        const list = document.querySelector(".conversation-list");
+        list.querySelectorAll(".conversation-item").forEach((item) => item.classList.remove("active"));
+        const item = document.createElement("div");
+        item.className = "conversation-item active";
+        item.innerHTML = "<strong>新的智能会话</strong><div class=\"row-sub\">刚刚创建</div>";
+        list.prepend(item);
+        document.querySelector(".chat-head").textContent = "新的智能会话";
+        showToast("新会话已创建。");
+      });
+
+      document.querySelector("[data-send-message]").addEventListener("click", () => {
+        const messages = document.querySelector(".messages");
+        const userMessage = document.createElement("div");
+        userMessage.className = "message user";
+        userMessage.textContent = "请根据当前组织知识总结今天的重点。";
+        const aiMessage = document.createElement("div");
+        aiMessage.className = "message ai";
+        aiMessage.textContent = "模拟回复：今天的重点是完成登录联调、整理数据模型，并补齐任务筛选交互。";
+        messages.append(userMessage, aiMessage);
+        messages.scrollTop = messages.scrollHeight;
+        showToast("消息已发送，智能回复已生成。");
+      });
+
+      document.querySelectorAll("[data-confirm]").forEach((item) => {
+        item.addEventListener("click", () => {
+          pendingConfirm = item.dataset.confirm;
+          modalMessage.textContent = pendingConfirm;
+          modal.classList.remove("hidden");
+        });
+      });
+
+      confirmCancel.addEventListener("click", () => {
+        modal.classList.add("hidden");
+        showToast("已取消操作。");
+      });
+
+      confirmOk.addEventListener("click", () => {
+        modal.classList.add("hidden");
+        showToast("已确认操作，原型中不会真实删除数据。");
+      });
+    </script>
   </body>
 </html>
-
