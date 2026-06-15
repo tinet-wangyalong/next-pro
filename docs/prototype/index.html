@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TeamPilot SaaS Prototype</title>
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --panel: #ffffff;
+        --panel-soft: #f9fafb;
+        --text: #20242a;
+        --muted: #68717d;
+        --line: #d9dde3;
+        --line-strong: #b9c0c9;
+        --brand: #2563eb;
+        --success: #16803c;
+        --warning: #a16005;
+        --danger: #c24130;
+        --radius: 8px;
+        --shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        background: var(--bg);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.45;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 28px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: 32px;
+        line-height: 1.1;
+      }
+
+      .hero p {
+        max-width: 760px;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 28px;
+      }
+
+      .toc a {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        padding: 8px 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .section {
+        margin-bottom: 34px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .section-title span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .screen {
+        min-height: 620px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .screen.small {
+        min-height: 480px;
+      }
+
+      .screen-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel-soft);
+        padding: 10px 12px;
+      }
+
+      .screen-name {
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .screen-note {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .auth-canvas {
+        display: grid;
+        min-height: 560px;
+        place-items: center;
+        padding: 42px;
+      }
+
+      .auth-box {
+        width: min(100%, 380px);
+      }
+
+      .brand {
+        margin-bottom: 28px;
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .auth-box h3 {
+        margin: 0 0 18px;
+        font-size: 24px;
+      }
+
+      .field {
+        margin-bottom: 12px;
+      }
+
+      .label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .input,
+      .textarea,
+      .select {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--line-strong);
+        border-radius: 6px;
+        background: #fff;
+        padding: 10px 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .textarea {
+        min-height: 140px;
+        align-items: flex-start;
+      }
+
+      .error {
+        border: 1px solid #f2b8ad;
+        border-radius: 6px;
+        background: #fff4f2;
+        padding: 10px 12px;
+        color: var(--danger);
+        font-size: 13px;
+        margin: 12px 0;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        border: 1px solid var(--line-strong);
+        border-radius: 6px;
+        background: #fff;
+        padding: 8px 12px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .btn.primary {
+        border-color: var(--brand);
+        background: var(--brand);
+        color: #fff;
+      }
+
+      .btn.danger {
+        border-color: #f0b8ad;
+        background: #fff4f2;
+        color: var(--danger);
+      }
+
+      .auth-link {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .app-frame {
+        display: grid;
+        min-height: 578px;
+        grid-template-columns: 190px 1fr;
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: #111827;
+        color: #fff;
+        padding: 16px 12px;
+      }
+
+      .sidebar-brand {
+        margin-bottom: 18px;
+        padding: 6px 8px;
+        font-weight: 800;
+      }
+
+      .nav-item {
+        display: block;
+        border-radius: 6px;
+        padding: 9px 10px;
+        color: #cbd5e1;
+        font-size: 14px;
+      }
+
+      .nav-item.active {
+        background: #243044;
+        color: #fff;
+      }
+
+      .main {
+        min-width: 0;
+        background: #fff;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid var(--line);
+        padding: 14px 18px;
+      }
+
+      .org-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel-soft);
+        padding: 7px 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      .page-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .page-title h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .page-title p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        padding: 14px;
+      }
+
+      .metric {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .metric-value {
+        margin-top: 8px;
+        font-size: 28px;
+        font-weight: 800;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+      }
+
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+        font-weight: 800;
+      }
+
+      .panel-body {
+        padding: 12px 14px;
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .list-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 10px;
+      }
+
+      .row-main {
+        min-width: 0;
+      }
+
+      .row-title {
+        font-weight: 750;
+      }
+
+      .row-sub {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .tag {
+        display: inline-flex;
+        border-radius: 999px;
+        background: #eef2ff;
+        padding: 4px 8px;
+        color: #33408a;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .status {
+        display: inline-flex;
+        border-radius: 999px;
+        background: #edf7ef;
+        padding: 4px 8px;
+        color: var(--success);
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .status.warn {
+        background: #fff7e8;
+        color: var(--warning);
+      }
+
+      .status.danger {
+        background: #fff4f2;
+        color: var(--danger);
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: 1fr 140px 140px auto;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .table th,
+      .table td {
+        border-bottom: 1px solid var(--line);
+        padding: 11px 10px;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      .table th {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .detail-layout {
+        display: grid;
+        grid-template-columns: 1fr 240px;
+        gap: 14px;
+      }
+
+      .article {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+      }
+
+      .article h4 {
+        margin: 0 0 12px;
+        font-size: 22px;
+      }
+
+      .article p {
+        color: var(--muted);
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .kanban-col {
+        min-height: 330px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel-soft);
+        padding: 10px;
+      }
+
+      .kanban-title {
+        margin-bottom: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .task-card {
+        display: grid;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .chat-layout {
+        display: grid;
+        min-height: 480px;
+        grid-template-columns: 220px 1fr;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .conversation-list {
+        border-right: 1px solid var(--line);
+        background: var(--panel-soft);
+        padding: 12px;
+      }
+
+      .conversation-item {
+        border-radius: 6px;
+        padding: 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .conversation-item.active {
+        background: #fff;
+        color: var(--text);
+        box-shadow: inset 0 0 0 1px var(--line);
+      }
+
+      .chat-panel {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .chat-head {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+        font-weight: 800;
+      }
+
+      .messages {
+        display: grid;
+        align-content: start;
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .message {
+        max-width: 72%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .message.user {
+        justify-self: end;
+        border-color: #bfd3ff;
+        background: #eff5ff;
+        color: #1f3e7a;
+      }
+
+      .message.ai {
+        justify-self: start;
+        background: #fff;
+      }
+
+      .composer {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        border-top: 1px solid var(--line);
+        padding: 12px;
+      }
+
+      .danger-zone {
+        border: 1px solid #f0b8ad;
+        border-radius: var(--radius);
+        background: #fff9f8;
+        padding: 14px;
+      }
+
+      .empty-state {
+        display: grid;
+        place-items: center;
+        min-height: 140px;
+        border: 1px dashed var(--line-strong);
+        border-radius: var(--radius);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 1100px) {
+        .grid.two,
+        .grid.three {
+          grid-template-columns: 1fr;
+        }
+
+        .cards {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 760px) {
+        .page {
+          padding: 16px;
+        }
+
+        .app-frame,
+        .split,
+        .detail-layout,
+        .chat-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .cards,
+        .kanban,
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <h1>TeamPilot SaaS 低保真原型图</h1>
+        <p>
+          基于 docs/PROTOTYPE_SPEC.md 生成，用于指导后续手写 Next.js 页面。
+          这份原型强调结构、信息层级、状态和交互入口，不追求最终视觉风格。
+        </p>
+      </header>
+
+      <nav class="toc" aria-label="原型目录">
+        <a href="#auth">登录注册</a>
+        <a href="#dashboard">仪表盘</a>
+        <a href="#org">组织</a>
+        <a href="#knowledge">知识库</a>
+        <a href="#tasks">任务</a>
+        <a href="#ai">AI 助手</a>
+        <a href="#admin">成员设置审计</a>
+      </nav>
+
+      <section id="auth" class="section">
+        <div class="section-title">
+          <h2>登录前页面</h2>
+          <span>居中表单、错误提示、登录注册互跳</span>
+        </div>
+        <div class="grid two">
+          <article class="screen small">
+            <div class="screen-head">
+              <div class="screen-name">登录页</div>
+              <div class="screen-note">/login</div>
+            </div>
+            <div class="auth-canvas">
+              <div class="auth-box">
+                <div class="brand">TeamPilot</div>
+                <h3>登录到你的工作台</h3>
+                <div class="field">
+                  <span class="label">邮箱</span>
+                  <div class="input">name@example.com</div>
+                </div>
+                <div class="field">
+                  <span class="label">密码</span>
+                  <div class="input">••••••••</div>
+                </div>
+                <div class="error">账号或密码错误，请检查后重试。</div>
+                <div class="btn primary" style="width: 100%">登录</div>
+                <div class="auth-link">还没有账号？创建你的团队工作台</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="screen small">
+            <div class="screen-head">
+              <div class="screen-name">注册页</div>
+              <div class="screen-note">/register</div>
+            </div>
+            <div class="auth-canvas">
+              <div class="auth-box">
+                <div class="brand">TeamPilot</div>
+                <h3>创建你的团队工作台</h3>
+                <div class="field">
+                  <span class="label">用户名</span>
+                  <div class="input">Wangyalong</div>
+                </div>
+                <div class="field">
+                  <span class="label">邮箱</span>
+                  <div class="input">name@example.com</div>
+                </div>
+                <div class="field">
+                  <span class="label">密码</span>
+                  <div class="input">••••••••</div>
+                </div>
+                <div class="field">
+                  <span class="label">确认密码</span>
+                  <div class="input">••••••••</div>
+                </div>
+                <div class="btn primary" style="width: 100%">注册并创建默认组织</div>
+                <div class="auth-link">已有账号？返回登录</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="dashboard" class="section">
+        <div class="section-title">
+          <h2>仪表盘</h2>
+          <span>登录后主框架、统计卡片、最近数据</span>
+        </div>
+        <article class="screen">
+          <div class="screen-head">
+            <div class="screen-name">Dashboard</div>
+            <div class="screen-note">/dashboard</div>
+          </div>
+          <div class="app-frame">
+            <aside class="sidebar">
+              <div class="sidebar-brand">TeamPilot</div>
+              <a class="nav-item active">Dashboard</a>
+              <a class="nav-item">Knowledge</a>
+              <a class="nav-item">Tasks</a>
+              <a class="nav-item">AI Assistant</a>
+              <a class="nav-item">Members</a>
+              <a class="nav-item">Settings</a>
+              <a class="nav-item">Audit Logs</a>
+            </aside>
+            <div class="main">
+              <div class="topbar">
+                <span class="org-pill">当前组织：Acme Studio</span>
+                <div class="button-row">
+                  <span class="org-pill">Wangyalong</span>
+                  <span class="btn">退出</span>
+                </div>
+              </div>
+              <div class="content">
+                <div class="page-title">
+                  <div>
+                    <h3>欢迎回来</h3>
+                    <p>查看当前组织的知识、任务和 AI 会话概览。</p>
+                  </div>
+                  <span class="btn primary">新建任务</span>
+                </div>
+                <div class="cards">
+                  <div class="card">
+                    <div class="metric">知识条目</div>
+                    <div class="metric-value">24</div>
+                  </div>
+                  <div class="card">
+                    <div class="metric">待办任务</div>
+                    <div class="metric-value">8</div>
+                  </div>
+                  <div class="card">
+                    <div class="metric">进行中</div>
+                    <div class="metric-value">5</div>
+                  </div>
+                  <div class="card">
+                    <div class="metric">AI 会话</div>
+                    <div class="metric-value">13</div>
+                  </div>
+                </div>
+                <div class="split">
+                  <div class="panel">
+                    <div class="panel-head">最近任务 <span class="screen-note">查看全部</span></div>
+                    <div class="panel-body list">
+                      <div class="list-row">
+                        <div class="row-main">
+                          <div class="row-title">完成登录接口联调</div>
+                          <div class="row-sub">负责人：Wangyalong · 今天</div>
+                        </div>
+                        <span class="status warn">In Progress</span>
+                      </div>
+                      <div class="list-row">
+                        <div class="row-main">
+                          <div class="row-title">整理 Prisma schema 草稿</div>
+                          <div class="row-sub">负责人：You · 明天</div>
+                        </div>
+                        <span class="status">Todo</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <div class="panel-head">最近知识 <span class="screen-note">新建知识</span></div>
+                    <div class="panel-body list">
+                      <div class="list-row">
+                        <div class="row-main">
+                          <div class="row-title">SaaS 多租户数据隔离笔记</div>
+                          <div class="row-sub">更新于 10 分钟前 · Owner</div>
+                        </div>
+                      </div>
+                      <div class="list-row">
+                        <div class="row-main">
+                          <div class="row-title">JWT 登录流程图</div>
+                          <div class="row-sub">更新于 昨天 · Admin</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="org" class="section">
+        <div class="section-title">
+          <h2>组织切换</h2>
+          <span>多组织入口、创建组织、数据刷新</span>
+        </div>
+        <article class="screen small">
+          <div class="screen-head">
+            <div class="screen-name">Organization Switcher</div>
+            <div class="screen-note">全局 topbar 弹层或独立页面</div>
+          </div>
+          <div class="content">
+            <div class="page-title">
+              <div>
+                <h3>选择组织</h3>
+                <p>切换后知识库、任务、成员和 AI 会话都会刷新为当前组织数据。</p>
+              </div>
+              <span class="btn primary">创建新组织</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body list">
+                <div class="list-row">
+                  <div class="row-main">
+                    <div class="row-title">Acme Studio</div>
+                    <div class="row-sub">当前组织 · Owner · 5 名成员</div>
+                  </div>
+                  <span class="status">Active</span>
+                </div>
+                <div class="list-row">
+                  <div class="row-main">
+                    <div class="row-title">Learning Lab</div>
+                    <div class="row-sub">Member · 2 名成员</div>
+                  </div>
+                  <span class="btn">切换</span>
+                </div>
+                <div class="list-row">
+                  <div class="row-main">
+                    <div class="row-title">Side Project</div>
+                    <div class="row-sub">Admin · 3 名成员</div>
+                  </div>
+                  <span class="btn">切换</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="knowledge" class="section">
+        <div class="section-title">
+          <h2>知识库</h2>
+          <span>列表、搜索、详情、编辑删除入口</span>
+        </div>
+        <div class="grid two">
+          <article class="screen">
+            <div class="screen-head">
+              <div class="screen-name">知识库列表页</div>
+              <div class="screen-note">/knowledge</div>
+            </div>
+            <div class="app-frame">
+              <aside class="sidebar">
+                <div class="sidebar-brand">TeamPilot</div>
+                <a class="nav-item">Dashboard</a>
+                <a class="nav-item active">Knowledge</a>
+                <a class="nav-item">Tasks</a>
+                <a class="nav-item">AI Assistant</a>
+              </aside>
+              <div class="main">
+                <div class="topbar"><span class="org-pill">Acme Studio</span><span class="btn">退出</span></div>
+                <div class="content">
+                  <div class="page-title">
+                    <div>
+                      <h3>知识库</h3>
+                      <p>管理当前组织的团队资料和项目笔记。</p>
+                    </div>
+                    <span class="btn primary">新建知识</span>
+                  </div>
+                  <div class="toolbar">
+                    <div class="input">搜索标题或内容</div>
+                    <div class="select">标签：全部</div>
+                    <div class="select">排序：最近更新</div>
+                    <div class="btn">搜索</div>
+                  </div>
+                  <div class="list">
+                    <div class="list-row">
+                      <div class="row-main">
+                        <div class="row-title">SaaS 多租户数据隔离笔记</div>
+                        <div class="row-sub">按 organizationId 过滤所有业务表，避免跨组织读写。</div>
+                        <div class="tag-row"><span class="tag">SaaS</span><span class="tag">Database</span></div>
+                      </div>
+                      <span class="screen-note">10 分钟前</span>
+                    </div>
+                    <div class="list-row">
+                      <div class="row-main">
+                        <div class="row-title">Redis 队列设计</div>
+                        <div class="row-sub">AI 任务先写入数据库，再交给 BullMQ 异步处理。</div>
+                        <div class="tag-row"><span class="tag">Redis</span><span class="tag">AI</span></div>
+                      </div>
+                      <span class="screen-note">昨天</span>
+                    </div>
+                    <div class="empty-state">空状态示例：还没有知识条目，创建第一条知识。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="screen">
+            <div class="screen-head">
+              <div class="screen-name">知识条目详情页</div>
+              <div class="screen-note">/knowledge/:id</div>
+            </div>
+            <div class="content">
+              <div class="page-title">
+                <div>
+                  <h3>SaaS 多租户数据隔离笔记</h3>
+                  <p>创建人：Wangyalong · 最后更新：10 分钟前</p>
+                </div>
+                <div class="button-row">
+                  <span class="btn">编辑</span>
+                  <span class="btn danger">删除</span>
+                </div>
+              </div>
+              <div class="detail-layout">
+                <article class="article">
+                  <h4>核心原则</h4>
+                  <p>
+                    所有业务数据都需要绑定 organizationId。查询列表、详情、更新和删除时，
+                    后端都必须根据当前用户的 membership 校验组织访问权限。
+                  </p>
+                  <p>
+                    前端切换组织后，应刷新当前页面数据；后端不能信任前端传入的角色信息。
+                  </p>
+                  <div class="tag-row"><span class="tag">SaaS</span><span class="tag">Security</span></div>
+                </article>
+                <aside class="panel">
+                  <div class="panel-head">元信息</div>
+                  <div class="panel-body list">
+                    <div class="row-sub">所属组织：Acme Studio</div>
+                    <div class="row-sub">创建人：Wangyalong</div>
+                    <div class="row-sub">最后更新人：Admin</div>
+                    <div class="row-sub">状态：可编辑</div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tasks" class="section">
+        <div class="section-title">
+          <h2>任务</h2>
+          <span>筛选、看板、详情编辑</span>
+        </div>
+        <div class="grid two">
+          <article class="screen">
+            <div class="screen-head">
+              <div class="screen-name">任务列表页</div>
+              <div class="screen-note">/tasks</div>
+            </div>
+            <div class="content">
+              <div class="page-title">
+                <div>
+                  <h3>任务</h3>
+                  <p>跟踪当前组织的待办、进行中和已完成工作。</p>
+                </div>
+                <span class="btn primary">新建任务</span>
+              </div>
+              <div class="toolbar">
+                <div class="select">状态：全部</div>
+                <div class="select">负责人：全部</div>
+                <div class="select">优先级：全部</div>
+                <div class="btn">筛选</div>
+              </div>
+              <div class="kanban">
+                <div class="kanban-col">
+                  <div class="kanban-title">Todo</div>
+                  <div class="task-card">
+                    <strong>设计 User schema</strong>
+                    <span class="row-sub">负责人：You · High · 明天</span>
+                  </div>
+                  <div class="task-card">
+                    <strong>补充 .env.example</strong>
+                    <span class="row-sub">负责人：Admin · Medium</span>
+                  </div>
+                </div>
+                <div class="kanban-col">
+                  <div class="kanban-title">In Progress</div>
+                  <div class="task-card">
+                    <strong>完成登录接口联调</strong>
+                    <span class="row-sub">负责人：Wangyalong · High</span>
+                  </div>
+                </div>
+                <div class="kanban-col">
+                  <div class="kanban-title">Done</div>
+                  <div class="task-card">
+                    <strong>编写产品需求文档</strong>
+                    <span class="row-sub">负责人：You · Low</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="screen">
+            <div class="screen-head">
+              <div class="screen-name">任务详情页</div>
+              <div class="screen-note">/tasks/:id</div>
+            </div>
+            <div class="content">
+              <div class="page-title">
+                <div>
+                  <h3>完成登录接口联调</h3>
+                  <p>创建人：Wangyalong · 更新时间：今天 14:20</p>
+                </div>
+                <span class="btn primary">保存修改</span>
+              </div>
+              <div class="detail-layout">
+                <div>
+                  <div class="field">
+                    <span class="label">任务标题</span>
+                    <div class="input">完成登录接口联调</div>
+                  </div>
+                  <div class="field">
+                    <span class="label">任务描述</span>
+                    <div class="textarea">联调注册、登录、当前用户接口，并确认 token 存储和路由保护流程。</div>
+                  </div>
+                </div>
+                <aside>
+                  <div class="field">
+                    <span class="label">状态</span>
+                    <div class="select">In Progress</div>
+                  </div>
+                  <div class="field">
+                    <span class="label">优先级</span>
+                    <div class="select">High</div>
+                  </div>
+                  <div class="field">
+                    <span class="label">负责人</span>
+                    <div class="select">Wangyalong</div>
+                  </div>
+                  <div class="field">
+                    <span class="label">截止时间</span>
+                    <div class="input">2026-06-20</div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="ai" class="section">
+        <div class="section-title">
+          <h2>AI 助手</h2>
+          <span>会话列表、消息流、异步任务状态</span>
+        </div>
+        <article class="screen">
+          <div class="screen-head">
+            <div class="screen-name">AI Assistant</div>
+            <div class="screen-note">/assistant</div>
+          </div>
+          <div class="content">
+            <div class="page-title">
+              <div>
+                <h3>AI 助手</h3>
+                <p>先使用 mock AI 回复，后续接入 OpenAI API 或其他模型服务。</p>
+              </div>
+              <span class="btn primary">新建会话</span>
+            </div>
+            <div class="chat-layout">
+              <aside class="conversation-list">
+                <div class="conversation-item active">
+                  <strong>如何设计多租户？</strong>
+                  <div class="row-sub">刚刚更新</div>
+                </div>
+                <div class="conversation-item">
+                  <strong>Redis 队列怎么用？</strong>
+                  <div class="row-sub">昨天</div>
+                </div>
+                <div class="conversation-item">
+                  <strong>登录流程复盘</strong>
+                  <div class="row-sub">2 天前</div>
+                </div>
+              </aside>
+              <div class="chat-panel">
+                <div class="chat-head">如何设计多租户？</div>
+                <div class="messages">
+                  <div class="message user">这个 SaaS 项目里 organizationId 应该怎么用？</div>
+                  <div class="message ai">
+                    建议所有业务表都保存 organizationId，并在后端从当前用户 membership
+                    校验权限。不要只依赖前端传入的组织 ID。
+                  </div>
+                  <div class="message user">那任务队列里的 AI 回复也需要组织隔离吗？</div>
+                  <div class="message ai">处理中... BullMQ job 已创建，状态为 processing。</div>
+                  <div class="message ai" style="border-color:#f0b8ad;color:var(--danger)">
+                    失败状态示例：模型服务暂时不可用。重试
+                  </div>
+                </div>
+                <div class="composer">
+                  <div class="input">输入问题，回车或点击发送</div>
+                  <span class="btn primary">发送</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="admin" class="section">
+        <div class="section-title">
+          <h2>成员、设置和审计</h2>
+          <span>权限、危险操作、操作日志</span>
+        </div>
+        <div class="grid three">
+          <article class="screen small">
+            <div class="screen-head">
+              <div class="screen-name">成员管理页</div>
+              <div class="screen-note">/members</div>
+            </div>
+            <div class="content">
+              <div class="page-title">
+                <div>
+                  <h3>成员</h3>
+                  <p>Owner 和 Admin 可以邀请成员。</p>
+                </div>
+                <span class="btn primary">邀请成员</span>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr><th>用户</th><th>角色</th><th>加入时间</th><th>操作</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Wangyalong</td><td>Owner</td><td>Jun 15</td><td>-</td></tr>
+                  <tr><td>Admin User</td><td>Admin</td><td>Jun 16</td><td>改角色</td></tr>
+                  <tr><td>Member User</td><td>Member</td><td>Jun 17</td><td>移除</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="screen small">
+            <div class="screen-head">
+              <div class="screen-name">组织设置页</div>
+              <div class="screen-note">/settings</div>
+            </div>
+            <div class="content">
+              <div class="page-title">
+                <div>
+                  <h3>组织设置</h3>
+                  <p>Owner 可以修改组织资料。</p>
+                </div>
+              </div>
+              <div class="field">
+                <span class="label">组织名称</span>
+                <div class="input">Acme Studio</div>
+              </div>
+              <div class="field">
+                <span class="label">组织 slug</span>
+                <div class="input">acme-studio</div>
+              </div>
+              <div class="btn primary">保存</div>
+              <div style="height: 18px"></div>
+              <div class="danger-zone">
+                <strong>危险区域</strong>
+                <p class="row-sub">删除组织需要二次确认，且只有 Owner 可操作。</p>
+                <span class="btn danger">删除组织</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="screen small">
+            <div class="screen-head">
+              <div class="screen-name">审计日志页</div>
+              <div class="screen-note">/audit-logs</div>
+            </div>
+            <div class="content">
+              <div class="page-title">
+                <div>
+                  <h3>审计日志</h3>
+                  <p>追踪组织内关键操作。</p>
+                </div>
+              </div>
+              <div class="toolbar" style="grid-template-columns:1fr 1fr 1fr">
+                <div class="select">操作人</div>
+                <div class="select">操作类型</div>
+                <div class="select">时间范围</div>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr><th>时间</th><th>操作人</th><th>动作</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>14:20</td><td>Wangyalong</td><td>更新任务状态</td></tr>
+                  <tr><td>13:10</td><td>Admin</td><td>修改成员角色</td></tr>
+                  <tr><td>昨天</td><td>Wangyalong</td><td>删除知识条目</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
