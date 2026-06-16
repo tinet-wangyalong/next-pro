@@ -1,0 +1,23 @@
+{
+  "name": "next-pro",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev:web": "pnpm --filter @wyl/web dev",
+    "dev:admin": "pnpm --filter @wyl/admin dev",
+    "dev:server": "pnpm --filter @wyl/server dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.34.3",
+  "devDependencies": {
+    "turbo": "^2.9.18"
+  }
+}
