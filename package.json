@@ -6,8 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev:web": "pnpm --filter @wyl/web dev",
-    "dev:admin": "pnpm --filter @wyl/admin dev",
-    "dev:server": "pnpm --filter @wyl/server dev",
+    "dev:api": "pnpm --filter @wyl/api start:dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
