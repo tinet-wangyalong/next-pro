@@ -4,10 +4,10 @@
 
 ## 总体方向
 
-- [ ] 使用 Monorepo 管理前端、后端和共享代码。
-- [ ] 前端使用 `apps/web`，技术栈为 Next.js + TypeScript。
+- [x] 使用 Monorepo 管理前端、后端和共享代码。
+- [x] 前端使用 `apps/web`，技术栈为 Next.js + TypeScript。
 - [ ] 后端使用 `apps/api`，技术栈为 NestJS + TypeScript。
-- [ ] 共享包放在 `packages/*`，用于类型、工具函数、配置等。
+- [x] 共享包放在 `packages/*`，用于类型、工具函数、配置等。
 - [ ] 本地基础设施使用 Docker 管理 PostgreSQL 和 Redis。
 - [ ] 数据库 ORM 默认使用 Prisma。
 - [ ] 先搭建 SaaS 基础骨架，再逐步加入 AI Agent 能力。
@@ -16,43 +16,43 @@
 
 ### 学习目标
 
-- [ ] 理解 Monorepo 的作用，以及为什么前后端项目可以放在一个仓库中。
+- [x] 理解 Monorepo 的作用，以及为什么前后端项目可以放在一个仓库中。
 - [ ] 理解 Next.js、NestJS、TypeScript 在项目中的职责边界。
-- [ ] 理解 package manager、workspace、脚本命令的基本概念。
+- [x] 理解 package manager、workspace、脚本命令的基本概念。
 
 ### 开发任务
 
-- [ ] 初始化 Git 仓库。
-- [ ] 选择并初始化 Node.js 包管理工具，推荐 `pnpm`。
+- [x] 初始化 Git 仓库。
+- [x] 选择并初始化 Node.js 包管理工具，推荐 `pnpm`。
 - [ ] 创建 Monorepo 目录结构：
-  - [ ] `apps/web`
+  - [x] `apps/web`
   - [ ] `apps/api`
   - [ ] `packages/config`
   - [ ] `packages/shared`
-- [ ] 创建 Next.js 前端应用。
+- [x] 创建 Next.js 前端应用。
 - [ ] 创建 NestJS 后端应用。
-- [ ] 配置 TypeScript。
-- [ ] 配置 ESLint。
+- [x] 配置 TypeScript。
+- [x] 配置 ESLint。
 - [ ] 配置 Prettier。
 - [ ] 添加根目录常用脚本：
-  - [ ] `dev`
-  - [ ] `build`
-  - [ ] `lint`
-  - [ ] `test`
+  - [x] `dev`
+  - [x] `build`
+  - [x] `lint`
+  - [x] `test`
 
 ### 验收标准
 
-- [ ] 根目录可以统一安装依赖。
-- [ ] `apps/web` 可以启动 Next.js 开发服务。
+- [x] 根目录可以统一安装依赖。
+- [x] `apps/web` 可以启动 Next.js 开发服务。
 - [ ] `apps/api` 可以启动 NestJS 开发服务。
 - [ ] 前后端都可以通过 TypeScript 编译。
-- [ ] `lint` 命令可以正常运行。
+- [x] `lint` 命令可以正常运行。
 
 ### 推荐练习
 
-- [ ] 手动画出 Monorepo 目录结构，并标注每个目录的职责。
+- [x] 手动画出 Monorepo 目录结构，并标注每个目录的职责。
 - [ ] 记录 Next.js 与 NestJS 分别解决什么问题。
-- [ ] 写下 `dependencies` 和 `devDependencies` 的区别。
+- [x] 写下 `dependencies` 和 `devDependencies` 的区别。
 
 ## 阶段 2：Docker 本地开发环境
 
@@ -157,7 +157,7 @@
 
 ### 学习目标
 
-- [ ] 理解 Next.js App Router 的基本结构。
+- [x] 理解 Next.js App Router 的基本结构。
 - [ ] 理解页面、布局、组件、服务端组件、客户端组件的差异。
 - [ ] 理解前端如何保存和使用登录状态。
 
@@ -377,4 +377,3 @@
 - [ ] Cache / Queue：Redis + BullMQ
 - [ ] Local Infrastructure：Docker Compose
 - [ ] AI Provider：先 mock，后续接入 OpenAI API 或其他模型服务
-
